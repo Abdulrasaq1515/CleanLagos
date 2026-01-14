@@ -52,6 +52,7 @@ export default defineConfig({
       'recharts',
       'react-router-dom',
       '@reduxjs/toolkit'
-    ]
+    ],
+    exclude: ['@popperjs/core']
   }
 });
