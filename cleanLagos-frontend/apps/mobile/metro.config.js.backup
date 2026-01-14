@@ -1,0 +1,34 @@
+const { getDefaultConfig } = require('@expo/metro-config');
+const path = require('path');
+
+// Get default config
+const defaultConfig = getDefaultConfig(__dirname);
+
+// Configure for monorepo
+const projectRoot = __dirname;
+const workspaceRoot = path.resolve(projectRoot, '../..');
+
+const config = {
+  ...defaultConfig,
+  projectRoot,
+  watchFolders: [workspaceRoot],
+  resolver: {
+    ...defaultConfig.resolver,
+    nodeModulesPaths: [
+      path.resolve(projectRoot, 'node_modules'),
+      path.resolve(workspaceRoot, 'node_modules'),
+    ],
+    platforms: ['ios', 'android', 'native', 'web'],
+  },
+  transformer: {
+    ...defaultConfig.transformer,
+    getTransformOptions: async () => ({
+      transform: {
+        experimentalImportSupport: false,
+        inlineRequires: true,
+      },
+    }),
+  },
+};
+
+module.exports = config;
