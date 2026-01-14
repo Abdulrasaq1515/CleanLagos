@@ -1,60 +1,49 @@
 export { store, persistor } from './store';
 
 // Auth exports
-export { 
-  loginUser, 
-  registerUser, 
-  fetchCurrentUser, 
-  logout, 
-  clearError,
-  setMockUser,
-  sendOTP,
-  verifyOTP,
-  resetPassword,
-  changePassword,
-  clearOTPState
+export {
+  registerUser,
+  verifyPhone,
+  loginUser,
+  fetchCurrentUser,
+  logout,
+  clearError as clearAuthError,
+  setRegistrationStep,
 } from './slices/authSlice';
 
-// Report exports
-export { 
-  submitReport, 
-  fetchMyReports, 
-  addOfflineReport,
-  clearOfflineReports,
-  syncOfflineReports,
-  deleteReport,
-  deleteReportById,
-  clearReportError
+// Reports exports
+export {
+  createReport,
+  fetchReports,
+  assignReport,
+  updateReportStatus,
+  clearError as clearReportError,
+  setFilters,
+  clearFilters,
 } from './slices/reportSlice';
 
-// PSP exports
-export { 
-  fetchMyTasks, 
-  acceptTask, 
-  completeTask,
-  fetchTaskHistory,
-  updateTaskStatus,
-  updateEarnings,
-  clearPspError
-} from './slices/pspSlice';
-
-// Recycler exports
-export {
-  fetchRecyclingTasks,
-  completeRecyclingTask,
-  clearRecyclerError,
-  updateMaterialStats
-} from './slices/recyclerSlice';
-
 // UI exports
-export { 
-  setLoading, 
-  addNotification, 
+export {
+  setLoading,
+  addNotification,
   removeNotification,
   clearAllNotifications,
   toggleTheme,
   setNetworkStatus,
-  setCurrentScreen
+  setCurrentScreen,
 } from './slices/uiSlice';
 
-console.log('Redux store exports ready');
+// Selectors
+export const selectAuth = (state) => state.auth;
+export const selectReports = (state) => state.reports;
+export const selectUI = (state) => state.ui;
+export const selectUser = (state) => state.auth.user;
+export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
+export const selectAuthLoading = (state) => state.auth.loading;
+export const selectAuthError = (state) => state.auth.error;
+export const selectAllReports = (state) => state.reports.reports;
+export const selectReportsPagination = (state) => state.reports.pagination;
+export const selectReportsLoading = (state) => state.reports.loading;
+export const selectNotifications = (state) => state.ui.notifications;
+export const selectTheme = (state) => state.ui.theme;
+export const selectNetworkStatus = (state) => state.ui.networkStatus;
