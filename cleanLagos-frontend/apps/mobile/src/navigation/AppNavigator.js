@@ -14,14 +14,14 @@ import CitizenNavigator from './CitizenNavigator';
 import PspNavigator from './PspNavigator';
 import RecyclerNavigator from './RecyclerNavigator';
 import NavigationErrorHandler from '../components/NavigationErrorHandler';
-import { fetchCurrentUser, selectAuth, logout } from '../store';
+import { fetchCurrentUser, selectAuth, logout } from '@cleanlagos/shared-redux-store';
 
 const Stack = createStackNavigator();
 
 // Role-based navigator mapping
 const RoleNavigators = {
   citizen: CitizenNavigator,
-  psp_worker: PspNavigator,
+  psp: PspNavigator, // Changed from psp_worker to match User model
   recycler: RecyclerNavigator,
   lawma_admin: () => (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5' }}>
@@ -72,7 +72,7 @@ export default function AppNavigator() {
 
   const getRoleNavigator = (userRole) => {
     // Validate role and provide appropriate navigator
-    const validRoles = ['citizen', 'psp_worker', 'recycler', 'lawma_admin'];
+    const validRoles = ['citizen', 'psp', 'recycler', 'lawma_admin', 'system_admin'];
     
     if (!userRole || !validRoles.includes(userRole)) {
       console.warn(`⚠️ Invalid user role: ${userRole}, defaulting to citizen`);

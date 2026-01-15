@@ -1,6 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { authAPI } from '../services/api';
 
+// Storage abstraction - use localStorage for web
+const storage = {
+  getItem: async (key) => {
+    return localStorage.getItem(key);
+  },
+  setItem: async (key, value) => {
+    return localStorage.setItem(key, value);
+  },
+  removeItem: async (key) => {
+    return localStorage.removeItem(key);
+  },
+};
+
 // Async thunks
 export const registerUser = createAsyncThunk(
   'auth/register',
@@ -20,7 +33,7 @@ export const verifyPhone = createAsyncThunk(
     try {
       const response = await authAPI.verifyPhone(data);
       if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
+        await storage.setItem('token', response.data.token);
       }
       return response.data;
     } catch (error) {
@@ -35,7 +48,7 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await authAPI.login(credentials);
       if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
+        await storage.setItem('token', response.data.token);
       }
       return response.data;
     } catch (error) {
@@ -56,9 +69,18 @@ export const fetchCurrentUser = createAsyncThunk(
   }
 );
 
+// Get initial token from storage
+const getInitialToken = async () => {
+  try {
+    return await storage.getItem('token');
+  } catch (error) {
+    return null;
+  }
+};
+
 const initialState = {
   user: null,
-  token: localStorage.getItem('token'),
+  token: null, // Will be hydrated by redux-persist
   isAuthenticated: false,
   loading: false,
   error: null,
@@ -75,7 +97,8 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.error = null;
-      localStorage.removeItem('token');
+      // Remove token from storage asynchronously
+      storage.removeItem('token').catch(console.error);
     },
     clearError: (state) => {
       state.error = null;
@@ -147,7 +170,7 @@ const authSlice = createSlice({
         state.error = action.payload;
         state.isAuthenticated = false;
         state.token = null;
-        localStorage.removeItem('token');
+        storage.removeItem('token').catch(console.error);
       });
   },
 });

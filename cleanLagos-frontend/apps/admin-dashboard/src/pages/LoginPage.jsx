@@ -99,6 +99,19 @@ const LoginPage = () => {
               {loading ? <CircularProgress size={24} /> : 'Sign In'}
             </Button>
 
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+              <Typography variant="body2" color="text.secondary">
+                Don't have an account?{' '}
+                <Typography
+                  component="span"
+                  sx={{ color: 'primary.main', cursor: 'pointer', fontWeight: 'bold' }}
+                  onClick={() => navigate('/register')}
+                >
+                  Register Here
+                </Typography>
+              </Typography>
+            </Box>
+
             <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 2 }}>
               Admin access only
             </Typography>

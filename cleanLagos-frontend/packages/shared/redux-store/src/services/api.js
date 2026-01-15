@@ -1,7 +1,25 @@
 import axios from 'axios';
 
+// Storage abstraction - use localStorage for web
+const storage = {
+  getItem: async (key) => {
+    return localStorage.getItem(key);
+  },
+  setItem: async (key, value) => {
+    return localStorage.setItem(key, value);
+  },
+  removeItem: async (key) => {
+    return localStorage.removeItem(key);
+  },
+};
+
 // Get API URL from environment variable
-const API_URL = process.env.REACT_APP_API_URL || process.env.VITE_API_URL;
+// Support both Vite (import.meta.env) and React Native (process.env)
+const API_URL = typeof import.meta !== 'undefined' && import.meta.env 
+  ? import.meta.env.VITE_API_URL 
+  : (typeof process !== 'undefined' && process.env 
+      ? (process.env.REACT_APP_API_URL || process.env.VITE_API_URL)
+      : 'http://localhost:5000/api');
 
 // Create axios instance
 const api = axios.create({
@@ -13,8 +31,8 @@ const api = axios.create({
 
 // Add token to requests
 api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
+  async (config) => {
+    const token = await storage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -26,10 +44,12 @@ api.interceptors.request.use(
 // Handle response errors
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
+      await storage.removeItem('token');
+      if (!isReactNative && typeof window !== 'undefined') {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

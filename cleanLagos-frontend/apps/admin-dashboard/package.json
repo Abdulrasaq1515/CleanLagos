@@ -17,6 +17,8 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.0",
     "@mui/material": "^5.15.0",
+    "@mui/private-theming": "^7.3.7",
+    "@mui/styled-engine": "^7.3.7",
     "@mui/utils": "5.17.1",
     "@reduxjs/toolkit": "^1.9.7",
     "@remix-run/router": "^1.23.2",

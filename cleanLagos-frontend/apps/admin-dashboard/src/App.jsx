@@ -10,6 +10,7 @@ import { CircularProgress, Box, Typography, Alert } from '@mui/material';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import ReportsPage from './pages/ReportsPage';
 import AnalyticsPage from './pages/AnalyticsPage';
@@ -101,6 +102,7 @@ function App() {
               <Router>
                 <Routes>
                   <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
                   <Route
                     path="/dashboard"
                     element={

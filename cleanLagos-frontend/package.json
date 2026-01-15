@@ -16,7 +16,8 @@
     "clean:cache": "pnpm store prune"
   },
   "devDependencies": {
-    "cosmiconfig": "^6.0.0"
+    "cosmiconfig": "^6.0.0",
+    "metro-core": "^0.83.3"
   },
   "overrides": {
     "cosmiconfig": "^6.0.0"
@@ -29,6 +30,8 @@
   "author": "CleanLagos Team",
   "license": "MIT",
   "dependencies": {
+    "@mui/utils": "^5.17.1",
+    "@popperjs/core": "^2.11.8",
     "async-limiter": "^2.0.0"
   }
 }
