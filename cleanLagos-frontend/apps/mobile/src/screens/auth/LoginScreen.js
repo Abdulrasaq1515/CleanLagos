@@ -1,4 +1,3 @@
-// apps/mobile/src/screens/auth/LoginScreen.js
 import React, { useState } from 'react';
 import { 
   View, 
@@ -10,18 +9,18 @@ import {
   TouchableOpacity 
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, clearError } from '../../store';
+import { loginUser, clearAuthError } from '@cleanlagos/shared-redux-store';
 
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const { isLoading, error, isAuthenticated } = useSelector((state) => state.auth);
-  const [email, setEmail] = useState('test@cleanlagos.com');
+  const [phone, setPhone] = useState('08012345678');
   const [password, setPassword] = useState('password123');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
-    dispatch(clearError());
-    const result = await dispatch(loginUser({ email, password }));
+    dispatch(clearAuthError());
+    const result = await dispatch(loginUser({ phone, password }));
     
     if (loginUser.fulfilled.match(result)) {
       console.log('Login successful, navigating based on role...');
@@ -31,13 +30,13 @@ export default function LoginScreen({ navigation }) {
   const handleQuickLogin = (role) => {
     // Quick login for testing different roles
     const testUsers = {
-      citizen: { email: 'citizen@cleanlagos.com', role: 'citizen' },
-      psp: { email: 'psp@cleanlagos.com', role: 'psp_worker' },
-      admin: { email: 'admin@cleanlagos.com', role: 'lawma_admin' },
-      recycler: { email: 'recycler@cleanlagos.com', role: 'recycler' }
+      citizen: { phone: '08012345678', role: 'citizen' },
+      psp: { phone: '08012345679', role: 'psp' },
+      admin: { phone: '08012345680', role: 'lawma_admin' },
+      recycler: { phone: '08012345681', role: 'recycler' }
     };
     
-    setEmail(testUsers[role].email);
+    setPhone(testUsers[role].phone);
     setPassword('password123');
     console.log('Quick login as:', role);
   };
@@ -56,11 +55,11 @@ export default function LoginScreen({ navigation }) {
       <View style={styles.form}>
         <TextInput
           style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
+          placeholder="Phone Number (e.g., 08012345678)"
+          value={phone}
+          onChangeText={setPhone}
           autoCapitalize="none"
-          keyboardType="email-address"
+          keyboardType="phone-pad"
           placeholderTextColor="#999"
         />
         

@@ -1,4 +1,3 @@
-// apps/mobile/src/screens/auth/RegisterScreen.js
 import React, { useState } from 'react';
 import { 
   View, 
@@ -13,7 +12,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
-import { registerUser, clearError, addNotification } from '../../store';
+import { registerUser, clearAuthError, addNotification } from '@cleanlagos/shared-redux-store';
 
 export default function RegisterScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -66,7 +65,7 @@ export default function RegisterScreen({ navigation }) {
   };
 
   const handleRegister = async () => {
-    dispatch(clearError());
+    dispatch(clearAuthError());
     
     if (!validateForm()) {
       return;
@@ -132,7 +131,7 @@ export default function RegisterScreen({ navigation }) {
         {/* Role Selection */}
         <Text style={styles.sectionLabel}>I am a:</Text>
         <View style={styles.roleSelection}>
-          {['citizen', 'psp_worker', 'recycler'].map((role) => (
+          {['citizen', 'psp', 'recycler'].map((role) => (
             <TouchableOpacity
               key={role}
               style={[
@@ -144,7 +143,7 @@ export default function RegisterScreen({ navigation }) {
               <Ionicons 
                 name={
                   role === 'citizen' ? 'person' : 
-                  role === 'psp_worker' ? 'construct' : 'reload'
+                  role === 'psp' ? 'construct' : 'reload'
                 }
                 size={20} 
                 color={formData.role === role ? '#fff' : '#2E7D32'} 
@@ -154,7 +153,7 @@ export default function RegisterScreen({ navigation }) {
                 formData.role === role && styles.roleButtonTextSelected
               ]}>
                 {role === 'citizen' ? 'Citizen' : 
-                 role === 'psp_worker' ? 'PSP Worker' : 'Recycler'}
+                 role === 'psp' ? 'PSP Worker' : 'Recycler'}
               </Text>
             </TouchableOpacity>
           ))}

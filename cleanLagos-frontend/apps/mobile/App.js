@@ -1,11 +1,10 @@
-import React from 'react';
 import { registerRootComponent } from 'expo';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, ActivityIndicator } from 'react-native';
 
-import { store, persistor } from './src/store';
+import { store, persistor } from '@cleanlagos/shared-redux-store';
 import AppNavigator from './src/navigation/AppNavigator';
 import ErrorBoundary from './src/components/ErrorBoundary';
 

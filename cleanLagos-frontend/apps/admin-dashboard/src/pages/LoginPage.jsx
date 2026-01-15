@@ -1,4 +1,3 @@
-// apps/admin-dashboard/src/pages/LoginPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,16 +11,16 @@ import {
   Alert,
   CircularProgress,
 } from '@mui/material';
-import { loginUser, setMockUser } from '@cleanlagos/shared-redux-store';
+import { loginUser } from '@cleanlagos/shared-redux-store';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoading, error } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
   
   const [credentials, setCredentials] = useState({
-    email: 'admin@cleanlagos.com',
-    password: 'password123',
+    phone: '',
+    password: '',
   });
 
   const handleSubmit = async (e) => {
@@ -30,28 +29,15 @@ const LoginPage = () => {
     const result = await dispatch(loginUser(credentials));
     
     if (loginUser.fulfilled.match(result)) {
-      // Check if user is admin
-      if (result.payload.user.role === 'lawma_admin' || result.payload.user.role === 'system_admin') {
+      const userRole = result.payload.user.role;
+      
+      // Only allow admin roles to access dashboard
+      if (userRole === 'lawma_admin' || userRole === 'system_admin') {
         navigate('/dashboard');
       } else {
-        // For testing, set mock admin user
-        dispatch(setMockUser({
-          ...result.payload.user,
-          role: 'lawma_admin',
-        }));
-        navigate('/dashboard');
+        alert('Access denied. Admin privileges required.');
       }
     }
-  };
-
-  const handleQuickLogin = (role) => {
-    dispatch(setMockUser({
-      id: `admin_${Date.now()}`,
-      email: `${role}@cleanlagos.com`,
-      fullName: `${role.charAt(0).toUpperCase() + role.slice(1)} User`,
-      role: 'lawma_admin',
-    }));
-    navigate('/dashboard');
   };
 
   return (
@@ -84,11 +70,11 @@ const LoginPage = () => {
               margin="normal"
               required
               fullWidth
-              label="Email Address"
-              type="email"
-              value={credentials.email}
-              onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
-              autoComplete="email"
+              label="Phone Number"
+              type="tel"
+              value={credentials.phone}
+              onChange={(e) => setCredentials({ ...credentials, phone: e.target.value })}
+              placeholder="+234XXXXXXXXXX"
               autoFocus
             />
             
@@ -108,41 +94,27 @@ const LoginPage = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, py: 1.5 }}
-              disabled={isLoading}
+              disabled={loading}
             >
-              {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
+              {loading ? <CircularProgress size={24} /> : 'Sign In'}
             </Button>
 
-            <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 2 }}>
-              For testing purposes:
-            </Typography>
-            
-            <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() => handleQuickLogin('admin')}
-                sx={{ flex: 1 }}
-              >
-                Admin
-              </Button>
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() => handleQuickLogin('supervisor')}
-                sx={{ flex: 1 }}
-              >
-                Supervisor
-              </Button>
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() => handleQuickLogin('auditor')}
-                sx={{ flex: 1 }}
-              >
-                Auditor
-              </Button>
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+              <Typography variant="body2" color="text.secondary">
+                Don't have an account?{' '}
+                <Typography
+                  component="span"
+                  sx={{ color: 'primary.main', cursor: 'pointer', fontWeight: 'bold' }}
+                  onClick={() => navigate('/register')}
+                >
+                  Register Here
+                </Typography>
+              </Typography>
             </Box>
+
+            <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 2 }}>
+              Admin access only
+            </Typography>
           </Box>
         </Paper>
       </Box>

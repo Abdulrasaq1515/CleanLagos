@@ -47,3 +47,5 @@ const SimpleLogin = ({ onLogin }) => {
             variant="outlined"
             color="secondary"
             size="large"
+  
+  }
