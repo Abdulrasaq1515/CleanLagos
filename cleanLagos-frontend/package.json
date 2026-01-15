@@ -7,10 +7,10 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:mobile": "cd apps/mobile && pnpm start",
-    "dev:admin": "cd apps/admin-dashboard && pnpm dev",
-    "build:admin": "cd apps/admin-dashboard && pnpm build",
-    "build:analyze": "cd apps/admin-dashboard && pnpm build && open dist/stats.html",
+    "dev:mobile": "node init && cd apps/mobile && pnpm start",
+    "dev:admin": "node init && cd apps/admin-dashboard && pnpm dev",
+    "build:admin": "node init && cd apps/admin-dashboard && pnpm build",
+    "build:analyze": "node init && cd apps/admin-dashboard && pnpm build && open dist/stats.html",
     "install:all": "pnpm install",
     "clean": "pnpm store prune && rm -rf node_modules apps/*/node_modules packages/*/node_modules",
     "clean:cache": "pnpm store prune"

@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "node init && vite",
+    "build": "node init && vite build",
     "preview": "vite preview",
     "analyze": "vite build && start dist/stats.html",
     "lighthouse": "lighthouse http://localhost:4173 --output html --output-path ./lighthouse-report.html",
